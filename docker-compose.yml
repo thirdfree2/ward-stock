@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: ward_stock_dev
+    environment:
+      POSTGRES_USER: ward_stock_dev_user
+      POSTGRES_PASSWORD: MvJCAy0dp24lcnkRMrtSKOovcvXs0J0J
+      POSTGRES_DB: ward_stock_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

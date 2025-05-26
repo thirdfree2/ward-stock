@@ -1,0 +1,16 @@
+# Go
+bin/
+*.exe
+*.log
+*.test
+*.out
+
+# IDEs
+.vscode/
+.idea/
+
+# Dependency
+vendor/
+
+# dotenv
+.env*
