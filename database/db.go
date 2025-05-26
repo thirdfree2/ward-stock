@@ -15,7 +15,10 @@ var DB *gorm.DB
 
 func Connect() {
 	env := os.Getenv("APP_ENV")
-	envFile := ".env.development"
+	envFile := ".env"
+	if env == "development" {
+		envFile = ".env.development"
+	}
 
 	if err := godotenv.Load(envFile); err != nil {
 		log.Fatalf("Failed to load env file %s: %v", envFile, err)
