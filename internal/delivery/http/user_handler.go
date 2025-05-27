@@ -24,6 +24,8 @@ func NewUserHandler(r *gin.Engine, uc usecase.UserUsecase) {
 	{
 		users.GET("/", h.ListUsers)
 		users.GET("/:id", h.GetUserByID)
+
+		// users.Use(middleware.AuthMiddleware())
 		users.POST("/", h.CreateUser)
 		users.PUT("/:id", h.UpdateUser)
 		users.DELETE("/:id", h.DeleteUser)

@@ -9,6 +9,8 @@ type User struct {
 	Code  string `gorm:"uniqueIndex" json:"code"`
 	Name  string `json:"name" validate:"required,min=2"`
 	Email string `json:"email" validate:"required,email"`
+
+	Roles []UserRole `gorm:"foreignKey:UserID"`
 	common.BaseModel
 }
 
