@@ -1,7 +1,7 @@
 package main
 
 import (
-	userhttp "ward-stock-backend/internal/delivery/http"
+	"ward-stock-backend/internal/delivery/http"
 	"ward-stock-backend/internal/domain"
 	"ward-stock-backend/internal/infrastructure/postgres"
 	"ward-stock-backend/internal/infrastructure/service"
@@ -29,7 +29,7 @@ func main() {
 
 	r := gin.Default()
 
-	userhttp.NewUserHandler(r, userUsecase)
+	http.RegisterRoutes(r, userUsecase)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run(":8080")
