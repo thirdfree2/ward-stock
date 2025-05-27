@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+	"ward-stock-backend/internal/auth"
 	"ward-stock-backend/internal/delivery/http"
 	"ward-stock-backend/internal/delivery/http/middleware"
 	"ward-stock-backend/internal/domain"
@@ -10,6 +12,7 @@ import (
 
 	_ "ward-stock-backend/docs"
 
+	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 
 	"github.com/gin-gonic/gin"
@@ -17,6 +20,12 @@ import (
 )
 
 func main() {
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	db := postgres.Connect()
 	db.AutoMigrate(
 		&domain.User{},
@@ -26,17 +35,16 @@ func main() {
 		&domain.RolePermission{},
 		&domain.UserRole{},
 	)
-
+	jwtSvc := service.NewJwtService()
 	userRepo := postgres.NewUserRepository(db)
 	runningRepo := service.NewRunningNumberService(db)
-
 	userUsecase := usecase.NewUserUsecase(userRepo, runningRepo)
-
+	authUsecase := usecase.NewAuthUsecase(userRepo, jwtSvc)
 	r := gin.Default()
 
-	http.RegisterRoutes(r, userUsecase)
+	http.RegisterRoutes(r, userUsecase, authUsecase)
 	r.Use(middleware.LoggerMiddleware())
-	r.Use(middleware.AuthMiddleware())
+	r.Use(auth.AuthMiddleware())
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run(":8080")
 }

@@ -16,6 +16,8 @@ type User struct {
 
 type UserRepository interface {
 	GetByID(id uint) (*User, error)
+	GetByEmail(email string) (*User, error)
+	GetPermissions(userID uint) ([]string, error)
 	List() ([]User, error)
 	Create(user *User) error
 	Update(user *User) error

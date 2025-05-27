@@ -25,6 +25,27 @@ func (r *userRepository) GetByID(id uint) (*domain.User, error) {
 	return &user, nil
 }
 
+func (r *userRepository) GetByEmail(email string) (*domain.User, error) {
+	var user domain.User
+	if err := r.db.Where("email = ?", email).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (r *userRepository) GetPermissions(userID uint) ([]string, error) {
+	var permissions []string
+
+	err := r.db.Table("permissions").
+		Select("permissions.code").
+		Joins("JOIN role_permissions ON role_permissions.permission_id = permissions.id").
+		Joins("JOIN user_roles ON user_roles.role_id = role_permissions.role_id").
+		Where("user_roles.user_id = ?", userID).
+		Scan(&permissions).Error
+
+	return permissions, err
+}
+
 func (r *userRepository) List() ([]domain.User, error) {
 	var users []domain.User
 	if err := r.db.Find(&users).Error; err != nil {

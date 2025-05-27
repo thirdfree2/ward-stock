@@ -6,6 +6,7 @@ import (
 
 type UserUsecase interface {
 	GetUserByID(id uint) (*domain.User, error)
+	GetByEmail(email string) (*domain.User, error)
 	ListUsers() ([]domain.User, error)
 	CreateUser(user *domain.User) error
 	UpdateUser(user *domain.User) error
@@ -19,6 +20,10 @@ type userUsecase struct {
 
 func NewUserUsecase(repo domain.UserRepository, runningRepo domain.RunningNumberRepository) UserUsecase {
 	return &userUsecase{repo: repo, runningRepo: runningRepo}
+}
+
+func (u *userUsecase) GetByEmail(email string) (*domain.User, error) {
+	return u.repo.GetByEmail(email)
 }
 
 func (u *userUsecase) GetUserByID(id uint) (*domain.User, error) {

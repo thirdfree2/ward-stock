@@ -7,7 +7,8 @@ import (
 )
 
 // RegisterRoutes adds all HTTP routes
-func RegisterRoutes(r *gin.Engine, uc usecase.UserUsecase) {
-	NewUserHandler(r, uc)
+func RegisterRoutes(r *gin.Engine, userUC usecase.UserUsecase, authUC usecase.AuthUsecase) {
+	NewUserHandler(r, userUC)
+	NewAuthHandler(r, authUC)
 	// เพิ่ม handler อื่นที่นี่ เช่น NewProductHandler(r, ...)
 }
