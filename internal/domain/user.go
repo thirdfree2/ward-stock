@@ -1,18 +1,15 @@
 package domain
 
 import (
-	"time"
-
-	"gorm.io/gorm"
+	"ward-stock-backend/internal/domain/common"
 )
 
 type User struct {
-	ID        uint   `json:"id" gorm:"primaryKey"`
-	Name      string `json:"name"`
-	Email     string `json:"email"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	ID    uint   `json:"id" gorm:"primaryKey"`
+	Code  string `gorm:"uniqueIndex" json:"code"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
+	common.BaseModel
 }
 
 type UserRepository interface {

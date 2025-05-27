@@ -13,11 +13,12 @@ type UserUsecase interface {
 }
 
 type userUsecase struct {
-	repo domain.UserRepository
+	repo        domain.UserRepository
+	runningRepo domain.RunningNumberRepository
 }
 
-func NewUserUsecase(repo domain.UserRepository) UserUsecase {
-	return &userUsecase{repo}
+func NewUserUsecase(repo domain.UserRepository, runningRepo domain.RunningNumberRepository) UserUsecase {
+	return &userUsecase{repo: repo, runningRepo: runningRepo}
 }
 
 func (u *userUsecase) GetUserByID(id uint) (*domain.User, error) {
@@ -29,6 +30,13 @@ func (u *userUsecase) ListUsers() ([]domain.User, error) {
 }
 
 func (u *userUsecase) CreateUser(user *domain.User) error {
+	code, err := u.runningRepo.NextNumber("USER", "USR", 5)
+	if err != nil {
+		return err
+	}
+
+	user.Code = code
+
 	return u.repo.Create(user)
 }
 

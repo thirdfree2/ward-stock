@@ -1,0 +1,21 @@
+info:
+  contact: {}
+paths:
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: คืนค่ารายชื่อผู้ใช้ทั้งหมด
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+      summary: ดึงรายชื่อผู้ใช้
+      tags:
+      - users
+swagger: "2.0"

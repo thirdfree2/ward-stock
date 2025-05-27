@@ -1,7 +1,6 @@
 package http
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -38,9 +37,14 @@ func (h *UserHandler) GetUserByID(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+// @Summary ดึงรายชื่อผู้ใช้
+// @Description คืนค่ารายชื่อผู้ใช้ทั้งหมด
+// @Tags users
+// @Accept json
+// @Produce json
+// @Success 200 {array} string
+// @Router /users [get]
 func (h *UserHandler) ListUsers(c *gin.Context) {
-	fmt.Println("Hello")
-
 	users, err := h.usecase.ListUsers()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
