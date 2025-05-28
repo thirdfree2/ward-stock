@@ -4,21 +4,12 @@ import (
 	"ward-stock-backend/internal/domain"
 )
 
-type UserUsecase interface {
-	GetUserByID(id uint) (*domain.User, error)
-	GetByEmail(email string) (*domain.User, error)
-	ListUsers() ([]domain.User, error)
-	CreateUser(user *domain.User) error
-	UpdateUser(user *domain.User) error
-	DeleteUser(id uint) error
-}
-
 type userUsecase struct {
 	repo        domain.UserRepository
 	runningRepo domain.RunningNumberRepository
 }
 
-func NewUserUsecase(repo domain.UserRepository, runningRepo domain.RunningNumberRepository) UserUsecase {
+func NewUserUsecase(repo domain.UserRepository, runningRepo domain.RunningNumberRepository) domain.UserUsecase {
 	return &userUsecase{repo: repo, runningRepo: runningRepo}
 }
 

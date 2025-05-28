@@ -27,3 +27,11 @@ type UserRole struct {
 	User User `gorm:"foreignKey:UserID"`
 	Role Role `gorm:"foreignKey:RoleID"`
 }
+
+type UserRoleRepository interface {
+	GetRolesByUserID(userID uint) (*Role, error)
+}
+
+type UserRoleUsecase interface {
+	GetRolesByUserID(userID uint) (*Role, error)
+}

@@ -4,16 +4,16 @@ import (
 	"net/http"
 	"ward-stock-backend/internal/delivery/http/dto"
 	"ward-stock-backend/internal/delivery/http/response"
-	"ward-stock-backend/internal/usecase"
+	"ward-stock-backend/internal/domain"
 
 	"github.com/gin-gonic/gin"
 )
 
 type AuthHandler struct {
-	usecase usecase.AuthUsecase
+	usecase domain.AuthUsecase
 }
 
-func NewAuthHandler(r *gin.Engine, uc usecase.AuthUsecase) {
+func NewAuthHandler(r *gin.Engine, uc domain.AuthUsecase) {
 	h := &AuthHandler{usecase: uc}
 
 	users := r.Group("/auth")

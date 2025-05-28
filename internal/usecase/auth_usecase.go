@@ -6,16 +6,12 @@ import (
 	"ward-stock-backend/internal/infrastructure/service"
 )
 
-type AuthUsecase interface {
-	Login(email string) (string, error)
-}
-
 type authUsecase struct {
 	userRepo domain.UserRepository
 	jwtSvc   service.JwtService
 }
 
-func NewAuthUsecase(userRepo domain.UserRepository, jwtSvc service.JwtService) AuthUsecase {
+func NewAuthUsecase(userRepo domain.UserRepository, jwtSvc service.JwtService) domain.AuthUsecase {
 	return &authUsecase{userRepo, jwtSvc}
 }
 

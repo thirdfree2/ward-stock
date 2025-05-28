@@ -1,7 +1,9 @@
 package postgres
 
 import (
+	"fmt"
 	"ward-stock-backend/internal/domain"
+	"ward-stock-backend/internal/infrastructure/postgres/model"
 
 	"gorm.io/gorm"
 )
@@ -18,11 +20,14 @@ func NewUserRepository(db *gorm.DB) domain.UserRepository {
 // ========== Implement domain.UserRepository ==========
 
 func (r *userRepository) GetByID(id uint) (*domain.User, error) {
-	var user domain.User
+	var user model.UserModel
 	if err := r.db.First(&user, id).Error; err != nil {
 		return nil, err
 	}
-	return &user, nil
+
+	fmt.Println(user)
+
+	return model.ToDomainUser(&user), nil
 }
 
 func (r *userRepository) GetByEmail(email string) (*domain.User, error) {

@@ -9,8 +9,6 @@ type User struct {
 	Code  string `gorm:"uniqueIndex" json:"code"`
 	Name  string `json:"name" validate:"required,min=2"`
 	Email string `json:"email" validate:"required,email"`
-
-	Roles []UserRole `gorm:"foreignKey:UserID"`
 	common.BaseModel
 }
 
@@ -22,4 +20,13 @@ type UserRepository interface {
 	Create(user *User) error
 	Update(user *User) error
 	Delete(id uint) error
+}
+
+type UserUsecase interface {
+	GetUserByID(id uint) (*User, error)
+	GetByEmail(email string) (*User, error)
+	ListUsers() ([]User, error)
+	CreateUser(user *User) error
+	UpdateUser(user *User) error
+	DeleteUser(id uint) error
 }

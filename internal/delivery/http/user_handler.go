@@ -9,17 +9,18 @@ import (
 	"ward-stock-backend/internal/delivery/http/request"
 	"ward-stock-backend/internal/delivery/http/response"
 	"ward-stock-backend/internal/domain"
-	"ward-stock-backend/internal/usecase"
 
 	"github.com/gin-gonic/gin"
 )
 
 type UserHandler struct {
-	usecase usecase.UserUsecase
+	userUC     domain.UserUsecase
+	userRoleUC domain.UserRoleUsecase
+	// roleUC domain.RoleUsecase
 }
 
-func NewUserHandler(r *gin.Engine, uc usecase.UserUsecase) {
-	h := &UserHandler{usecase: uc}
+func NewUserHandler(r *gin.Engine, uc domain.UserUsecase, urc domain.UserRoleUsecase) {
+	h := &UserHandler{userUC: uc, userRoleUC: urc}
 
 	users := r.Group("/users")
 	{
@@ -44,12 +45,15 @@ func NewUserHandler(r *gin.Engine, uc usecase.UserUsecase) {
 // @Router /users/{id} [get]
 func (h *UserHandler) GetUserByID(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	user, err := h.usecase.GetUserByID(uint(id))
+
+	userDetail, err := h.userUC.GetUserByID(uint(id))
+	userRole, err := h.userRoleUC.GetRolesByUserID(uint(id))
 	if err != nil {
 		response.Error(c, http.StatusNotFound, "User not found", err)
 		return
 	}
-	c.JSON(http.StatusOK, user)
+
+	response.Success(c, dto.ToUserResponse(userDetail, userRole))
 }
 
 // ListUsers godoc
@@ -61,7 +65,7 @@ func (h *UserHandler) GetUserByID(c *gin.Context) {
 // @Failure 500 {object} response.ApiResponse
 // @Router /users [get]
 func (h *UserHandler) ListUsers(c *gin.Context) {
-	users, err := h.usecase.ListUsers()
+	users, err := h.userUC.ListUsers()
 	if err != nil {
 		response.Error(c, http.StatusNotFound, "User not found", err)
 		return
@@ -85,7 +89,7 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 		return
 	}
 	user := dto.ToDomainUser(req)
-	if err := h.usecase.CreateUser(&user); err != nil {
+	if err := h.userUC.CreateUser(&user); err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to create user", err)
 		return
 	}
@@ -111,7 +115,7 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 		return
 	}
 	user.ID = uint(id)
-	if err := h.usecase.UpdateUser(&user); err != nil {
+	if err := h.userUC.UpdateUser(&user); err != nil {
 		response.Error(c, http.StatusNotFound, "User not found", err)
 		return
 	}
@@ -129,7 +133,7 @@ func (h *UserHandler) UpdateUser(c *gin.Context) {
 // @Router /users/{id} [delete]
 func (h *UserHandler) DeleteUser(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	if err := h.usecase.DeleteUser(uint(id)); err != nil {
+	if err := h.userUC.DeleteUser(uint(id)); err != nil {
 		response.Error(c, http.StatusNotFound, "User not found", err)
 		return
 	}
