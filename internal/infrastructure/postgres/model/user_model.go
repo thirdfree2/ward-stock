@@ -9,7 +9,7 @@ type UserModel struct {
 	Code  string
 	Name  string
 	Email string
-	Roles []domain.UserRole `gorm:"foreignKey:UserID"`
+	Roles UserRoleModel `gorm:"foreignKey:UserID"`
 }
 
 func ToDomainUser(u *UserModel) *domain.User {

@@ -23,5 +23,5 @@ func (r *userRoleRepository) GetRolesByUserID(userID uint) (*domain.Role, error)
 		return nil, err
 	}
 
-	return &userRole.Role, nil
+	return model.ToDomainRole(&userRole.Role), nil
 }
