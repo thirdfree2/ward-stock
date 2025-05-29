@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"ward-stock-backend/internal/auth"
 	"ward-stock-backend/internal/delivery/http/dto"
 	"ward-stock-backend/internal/delivery/http/request"
 	"ward-stock-backend/internal/delivery/http/response"
@@ -24,7 +23,7 @@ func NewUserHandler(r *gin.Engine, uc domain.UserUsecase, urc domain.UserRoleUse
 
 	users := r.Group("/users")
 	{
-		users.Use(auth.AuthMiddleware())
+		// users.Use(auth.AuthMiddleware())
 		users.GET("/", h.ListUsers)
 		users.GET("/:id", h.GetUserByID)
 		users.POST("/", h.CreateUser)
