@@ -16,5 +16,11 @@
 ## 🚀 เริ่มต้นใช้งาน
 ### 1. สร้าง `.env`
 ### 2. `docker-compose up -d`
-### 3. `go run ./cmd/main.go`
+### 3. `make run` // สร้าง Table
+### 4. `make seed` // สร้าง Seed Test ข้อมูล
+
+---
+
+
+26 internal/delivery/http/user_handler.go เปิดการ Auth
 

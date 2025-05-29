@@ -22,6 +22,16 @@ func NewAuthHandler(r *gin.Engine, uc domain.AuthUsecase) {
 	}
 }
 
+// Login godoc
+// @Summary Authentication
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param request body dto.LoginRequest true "Login Request"
+// @Success 200 {object} response.ApiResponse
+// @Failure 400 {object} response.ApiResponse
+// @Failure 401 {object} response.ApiResponse
+// @Router /auth/ [post]
 func (h *AuthHandler) Login(c *gin.Context) {
 	var req dto.LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

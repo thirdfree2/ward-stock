@@ -10,7 +10,7 @@ import (
 	"ward-stock-backend/internal/infrastructure/service"
 	"ward-stock-backend/internal/usecase"
 
-	_ "ward-stock-backend/docs"
+	_ "ward-stock-backend/cmd/server/docs"
 
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
@@ -45,8 +45,9 @@ func main() {
 	r := gin.Default()
 
 	http.RegisterRoutes(r, userRoleUsecase, userUsecase, authUsecase)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Use(middleware.LoggerMiddleware())
 	r.Use(auth.AuthMiddleware())
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	r.Run(":8080")
 }

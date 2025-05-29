@@ -10,9 +10,20 @@ definitions:
       id:
         type: integer
       name:
+        minLength: 2
         type: string
       updated_at:
         type: string
+    required:
+    - email
+    - name
+    type: object
+  dto.LoginRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
     type: object
   response.ApiResponse:
     properties:
@@ -27,6 +38,35 @@ definitions:
 info:
   contact: {}
 paths:
+  /auth/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ApiResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.ApiResponse'
+      summary: Authentication
+      tags:
+      - Auth
   /users:
     get:
       consumes:
